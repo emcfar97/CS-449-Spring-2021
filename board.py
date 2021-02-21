@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QGridLayout, QPushButton, QWidget
 
-# Code for ggameboard. Accepts n rows and returns n x n matrix
+# Code for gameboard. Accepts n rows and returns n x n matrix
 # of tiles
 class Board(QWidget):
     'TBA'
@@ -41,7 +41,7 @@ class Tile(QPushButton):
         
         self.setFixedSize(50, 50)
     
-# for running as a single file for debugging
+# for running as a single file during debugging
 if __name__ == '__main__':
 
     from PyQt5.QtWidgets import QApplication
