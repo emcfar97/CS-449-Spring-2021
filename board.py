@@ -28,10 +28,20 @@ class Board(QWidget):
         # populate rank and file with appropriate literals
         for i in range(rings):
 
-            self.rank[0].addWidget(QLabel(str(i + 1), self))
-            self.rank[1].addWidget(QLabel(str(i + 1), self))
-            self.file[0].addWidget(QLabel(chr(i + 97), self))
-            self.file[1].addWidget(QLabel(chr(i + 97), self))
+            rank_1 = QLabel(str(i + 1), self)
+            rank_1.setAlignment(Qt.AlignCenter)
+            file_1 = QLabel(chr(i + 97), self)
+            file_1.setAlignment(Qt.AlignCenter)
+            
+            rank_2 = QLabel(str(i + 1), self)
+            rank_2.setAlignment(Qt.AlignCenter)
+            file_2 = QLabel(chr(i + 97), self)
+            file_2.setAlignment(Qt.AlignCenter)
+
+            self.rank[0].addWidget(rank_1)
+            self.rank[1].addWidget(rank_2)
+            self.file[0].addWidget(file_1)
+            self.file[1].addWidget(file_2)
         
         # add grid, rank, and file to board
         self.layout.addWidget(self.grid, 1, 1)
@@ -54,7 +64,7 @@ class Grid(QWidget):
     def configure_gui(self):
 
         self.layout = QGridLayout()
-        self.layout.setSpacing(0)
+        self.layout.setSpacing(50)
         self.setLayout(self.layout)
 
     def create_widgets(self, rings):
@@ -81,7 +91,7 @@ class Tile(QPushButton):
     
     def configure_gui(self):
         
-        self.setFixedSize(50, 50)
+        self.setFixedSize(25, 25)
     
 # for running as a single file during debugging
 if __name__ == '__main__':
