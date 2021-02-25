@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 
 
 def set_directory():
-    '''Temporary function far changing current working directory
+    '''Temporary function for changing current working directory
     so that relative paths are correctly resolved'''
 
     import os, pathlib
@@ -96,12 +96,13 @@ class Grid(QWidget):
 
 # Tile for gameboard. Currently pushbuttons, but would like
 # to make them generic widgets in future
-class Tile(QPushButton):
+class Tile(QLabel):
     'TBA'
 
     def __init__(self, parent, name):
         super(Tile, self).__init__(name, parent)
         self.setFixedSize(25, 25)
+        self.setStyleSheet('border: 1px solid black')
 
 
 # Code for game pieces. Can be white or black based on type_
