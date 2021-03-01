@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QSizePolicy
 from PyQt5.QtGui import QPixmap, QDrag
 from PyQt5.QtCore import Qt, QMimeData
 
@@ -19,23 +19,30 @@ class Board(QWidget):
     'TBA'
 
     def __init__(self, parent, rings=3):
+
         super(Board, self).__init__(parent)
         self.configure_gui()
         self.create_widgets(rings)
 
     def configure_gui(self):
+
+        self.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+            )
         self.layout = QGridLayout()
-        self.layout.setSpacing(0)
         self.setLayout(self.layout)
 
     def create_widgets(self, rings):
+
         # create main components of board
         self.grid = Grid(self, rings)
         self.file = QHBoxLayout(), QHBoxLayout()
         self.rank = QVBoxLayout(), QVBoxLayout()
+        self.bank = QVBoxLayout(), QVBoxLayout()
 
         # populate rank and file with appropriate literals
         for i in range(rings):
+
             rank_1 = QLabel(str(i + 1), self)
             rank_1.setAlignment(Qt.AlignCenter)
             file_1 = QLabel(chr(i + 97), self)
@@ -51,12 +58,20 @@ class Board(QWidget):
             self.file[0].addWidget(file_1)
             self.file[1].addWidget(file_2)
 
-        # add grid, rank, and file to board
-        self.layout.addWidget(self.grid, 1, 1)
-        self.layout.addLayout(self.file[0], 0, 1)
-        self.layout.addLayout(self.file[1], 2, 1)
-        self.layout.addLayout(self.rank[0], 1, 0)
-        self.layout.addLayout(self.rank[1], 1, 2)
+        # populate bank with appropriate pieces
+        for i in range(9):
+
+            self.bank[0].addWidget(Piece(self, 0))
+            self.bank[1].addWidget(Piece(self, 1))
+
+        # add grid, rank, file, and banks to board
+        self.layout.addWidget(self.grid, 2, 2)
+        self.layout.addLayout(self.file[0], 1, 2)
+        self.layout.addLayout(self.file[1], 3, 2)
+        self.layout.addLayout(self.rank[0], 2, 1)
+        self.layout.addLayout(self.rank[1], 2, 3)
+        self.layout.addLayout(self.bank[0], 2, 0)
+        self.layout.addLayout(self.bank[1], 2, 4)
 
 # Code for grid. Accepts n rows and returns n x n matrix
 # of tiles
@@ -71,42 +86,42 @@ class Grid(QWidget):
 
     def configure_gui(self):
 
-        self.setAcceptDrops(True)
-
+        self.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+            )
         self.layout = QGridLayout()
-        self.layout.setSpacing(50)
+        self.layout.setSpacing(1)
         self.setLayout(self.layout)
 
     def create_widgets(self, rings):
 
-        self.tiles = []
-
         for row in range(rings):
 
             for col in range(rings):
-                tile = Tile(self, f'{row}-{col}')
+                tile = Tile(self, [row, col])
                 self.layout.addWidget(tile, row, col)
-                self.tiles.append(tile)
 
 # Tile for gameboard. Currently pushbuttons, but would like
 # to make them generic widgets in future
 class Tile(QLabel):
     'TBA'
 
-    def __init__(self, parent, name):
+    def __init__(self, parent, coordinate):
 
-        super(Tile, self).__init__(name, parent)
-        self.setFixedSize(25, 25)
+        super(Tile, self).__init__(parent)
+        self.coordinate = coordinate
+        self.setAcceptDrops(True)
         self.setStyleSheet('border: 1px solid black')
 
-    def dragEnterEvent(self, event) -> None:
-        
-        return super().dragEnterEvent(event)
+    def dragEnterEvent(self, event): event.accept()
 
     def dropEvent(self, event):
 
-        data = event.mimeData()
-        self.addItem(event.mimeData().text())
+        self.parent().layout.addWidget(
+            event.source(), 
+            self.coordinate[0], 
+            self.coordinate[1]
+            )
 
 # Code for game pieces. Can be white or black based on type_
 # variable.
@@ -129,14 +144,11 @@ class Piece(QLabel):
 
     def mousePressEvent(self, event):
         
-        mimeData = QMimeData()
-        # mimeData.setData('image/png', data)
-
         drag = QDrag(self)
-        drag.setMimeData(mimeData)
+        drag.setMimeData(QMimeData())
         drag.setPixmap(self.pixmap())
-        drag.setHotSpot(event.pos() - self.rect().topLeft())
-        dropAction = drag.exec_(Qt.MoveAction)
+        drag.setHotSpot(event.pos())
+        drag.exec_(Qt.MoveAction)
 
 set_directory()
 
@@ -145,9 +157,11 @@ if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication
 
     Qapp = QApplication([])
-    window = QWidget()
-    board = Board(window, 5)
-    # board.show()
-    p = [Piece(window, i%2) for i in range(10)]
-    window.showMaximized()
+    # window = QWidget()
+    # window.setSizePolicy(
+    #         QSizePolicy.Expanding, QSizePolicy.Expanding
+    #         )
+    board = Board(None, 7)
+    board.show()
+    # window.show()
     Qapp.exec_()
