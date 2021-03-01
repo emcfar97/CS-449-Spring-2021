@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QPushButton, QWidget, QLabel
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget, QLabel
+from PyQt5.QtGui import QPixmap, QDrag
+from PyQt5.QtCore import Qt, QMimeData
 
 
 def set_directory():
@@ -58,7 +58,6 @@ class Board(QWidget):
         self.layout.addLayout(self.rank[0], 1, 0)
         self.layout.addLayout(self.rank[1], 1, 2)
 
-
 # Code for grid. Accepts n rows and returns n x n matrix
 # of tiles
 class Grid(QWidget):
@@ -89,24 +88,28 @@ class Grid(QWidget):
                 self.layout.addWidget(tile, row, col)
                 self.tiles.append(tile)
 
-    def dropEvent(self, event):
-
-        self.addItem(event.mimeData().text())
-
-
 # Tile for gameboard. Currently pushbuttons, but would like
 # to make them generic widgets in future
 class Tile(QLabel):
     'TBA'
 
     def __init__(self, parent, name):
+
         super(Tile, self).__init__(name, parent)
         self.setFixedSize(25, 25)
         self.setStyleSheet('border: 1px solid black')
 
+    def dragEnterEvent(self, event) -> None:
+        
+        return super().dragEnterEvent(event)
+
+    def dropEvent(self, event):
+
+        data = event.mimeData()
+        self.addItem(event.mimeData().text())
 
 # Code for game pieces. Can be white or black based on type_
-# variable. Currently not capable of being dragged
+# variable.
 class Piece(QLabel):
     'TBA'
 
@@ -120,14 +123,20 @@ class Piece(QLabel):
             path = r'Resources\white_piece.png'
         else:
             raise ValueError
-
+        
         pixmap = QPixmap(path)
         self.setPixmap(pixmap)
 
-    def dragMoveEvent(self, event):
+    def mousePressEvent(self, event):
+        
+        mimeData = QMimeData()
+        # mimeData.setData('image/png', data)
 
-        return super().dragMoveEvent(a0)
-
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        drag.setPixmap(self.pixmap())
+        drag.setHotSpot(event.pos() - self.rect().topLeft())
+        dropAction = drag.exec_(Qt.MoveAction)
 
 set_directory()
 
@@ -136,6 +145,9 @@ if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication
 
     Qapp = QApplication([])
-    board = Board(None, 5)
-    board.show()
+    window = QWidget()
+    board = Board(window, 5)
+    # board.show()
+    p = [Piece(window, i%2) for i in range(10)]
+    window.showMaximized()
     Qapp.exec_()
