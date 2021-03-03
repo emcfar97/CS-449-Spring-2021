@@ -12,16 +12,6 @@ LEGAL = [
     [6, 0], [6, 3], [6, 6],
     ]
 
-def set_directory():
-    '''Temporary function for changing current working directory
-    so that relative paths are correctly resolved'''
-
-    import os, pathlib
-
-    path = pathlib.Path(__file__).parent
-    os.chdir(path)
-
-
 # Code for gameboard. Accepts n rows and returns n x n matrix
 # of tiles with rank and file
 class Board(QWidget):
@@ -161,8 +151,6 @@ class Piece(QLabel):
         drag.setPixmap(self.pixmap())
         drag.setHotSpot(event.pos())
         drag.exec_(Qt.MoveAction)
-
-set_directory()
 
 # for running as a single file during debugging
 if __name__ == '__main__':
