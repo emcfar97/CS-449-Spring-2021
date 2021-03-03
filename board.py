@@ -2,6 +2,15 @@ from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget, QLab
 from PyQt5.QtGui import QPixmap, QDrag
 from PyQt5.QtCore import Qt, QMimeData
 
+LEGAL = [
+    [0, 0], [0, 3], [0, 6],
+    [1, 1], [1, 3], [1, 5],
+    [2, 2], [2, 3], [2, 4],
+    [3, 0], [3, 1], [3, 2], [3, 4], [3, 5], [3, 6],
+    [4, 2], [4, 3], [4, 4],
+    [5, 1], [5, 3], [5, 5],
+    [6, 0], [6, 3], [6, 6],
+    ]
 
 def set_directory():
     '''Temporary function for changing current working directory
@@ -86,6 +95,9 @@ class Grid(QWidget):
 
     def configure_gui(self):
 
+        # self.setStyleSheet(
+        #     'background-image: url(Resources/game_board.png)'
+        #     )
         self.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
             )
@@ -110,7 +122,7 @@ class Tile(QLabel):
 
         super(Tile, self).__init__(parent)
         self.coordinate = coordinate
-        self.setAcceptDrops(True)
+        if coordinate in LEGAL: self.setAcceptDrops(True)
         self.setStyleSheet('border: 1px solid black')
 
     def dragEnterEvent(self, event): event.accept()
@@ -157,11 +169,6 @@ if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication
 
     Qapp = QApplication([])
-    # window = QWidget()
-    # window.setSizePolicy(
-    #         QSizePolicy.Expanding, QSizePolicy.Expanding
-    #         )
     board = Board(None, 7)
-    board.show()
-    # window.show()
+    board.showMaximized()
     Qapp.exec_()
