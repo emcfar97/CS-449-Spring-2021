@@ -143,6 +143,7 @@ class Piece(QLabel):
         
         pixmap = QPixmap(path)
         self.setPixmap(pixmap)
+        self.setAlignment(Qt.AlignCenter)
 
     def mousePressEvent(self, event):
         
