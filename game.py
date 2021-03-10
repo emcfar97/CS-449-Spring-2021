@@ -1,5 +1,5 @@
 import board, logic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
@@ -20,9 +20,12 @@ class Game(QMainWindow):
         self.center.setLayout(self.layout)
         self.setCentralWidget(self.center)
         
-    def create_widgets(self): pass
+    def create_widgets(self):
 
         # self.board = board.Board(self)
+        self.statusbar = QStatusBar(self)
+        self.setSatusBar(self.statusbar)
+        self.statusbar.setFixedHeight(25)
 
     def keyPressEvent(self, event): 
         
