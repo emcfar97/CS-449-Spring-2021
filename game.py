@@ -23,7 +23,6 @@ class Game(QMainWindow):
     def create_widgets(self):
 
         self.placeholder = QWidget(self)
-        self.placeholder.setStyleSheet('color:red')
         self.board = board.Board(self)
 
         self.layout.addWidget(self.placeholder, 1)
@@ -41,11 +40,11 @@ class Game(QMainWindow):
             f'\tBlack Pieces: {num} \tWhite Pieces: {num}'
             )
 
-    def complete_turn(self, start, end):
+    def complete_turn(self):
 
         pass
 
-    def keyPressEvent(self, event): 
+    def keyPressEvent(self, event):
         
         key_press = event.key()
         if key_press == Qt.Key_Escape: self.close()

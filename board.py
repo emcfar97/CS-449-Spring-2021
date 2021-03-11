@@ -25,6 +25,8 @@ class Board(QWidget):
 
     def configure_gui(self):
 
+        self.recorded_moves = []
+
         self.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
             )
@@ -76,7 +78,7 @@ class Board(QWidget):
 # Code for grid. Accepts n rows and returns n x n matrix
 # of tiles
 class Grid(QWidget):
-    'TBA'
+    'Accepts n rows and returns n x n matrix of tiles'
 
     def __init__(self, parent, rings=3):
 
@@ -126,10 +128,9 @@ class Bank(QWidget):
 
             piece.draggable = not piece.draggable
 
-# Tile for gameboard. Currently pushbuttons, but would like
-# to make them generic widgets in future
+# Tile for gameboard. 
 class Tile(QLabel):
-    'TBA'
+    'Tile for gameboard'
 
     def __init__(self, parent, coordinate):
 
@@ -138,8 +139,16 @@ class Tile(QLabel):
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.setStyleSheet('border: 1px solid black')
 
-    def dragEnterEvent(self, event): event.accept()
+    def dragEnterEvent(self, event): 
+        print(f'Enter: {self.coordinate}')
+        # self.parent().parent().recorded_moves.pop(-1)
+        event.accept()
 
+    def dragLeaveEvent(self, event): 
+        
+        print(f'Leave: {self.coordinate}')
+        self.parent().parent().recorded_moves.append([self.coordinate])
+        
     def dropEvent(self, event):
 
         self.parent().layout.addWidget(
@@ -147,6 +156,10 @@ class Tile(QLabel):
             self.coordinate[0], 
             self.coordinate[1]
             )
+        try:
+            self.parent().parent().recorded_moves[-1].append(self.coordinate)
+        except IndexError: pass
+        self.parent().parent().parent().parent().complete_turn()
 
 # Code for game pieces. Can be white or black based on type_
 # variable.
@@ -157,9 +170,10 @@ class Piece(QLabel):
 
         super(Piece, self).__init__(parent)
 
-        if type_ == 0:
+        self.type = type_
+        if self.type == 0:
             path = r'Resources\black_piece.png'
-        elif type_ == 1:
+        elif self.type == 1:
             path = r'Resources\white_piece.png'
         else:
             raise ValueError
