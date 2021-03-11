@@ -140,14 +140,17 @@ class Tile(QLabel):
         self.setStyleSheet('border: 1px solid black')
 
     def dragEnterEvent(self, event): 
-        print(f'Enter: {self.coordinate}')
-        # self.parent().parent().recorded_moves.pop(-1)
+        
+        # print(f'Enter: {self.coordinate} \t{self.parent().parent().recorded_moves}')
+        # try: self.parent().parent().recorded_moves.pop(-1)
+        # except: self.parent().parent().recorded_moves.append([None])
+        
         event.accept()
 
-    def dragLeaveEvent(self, event): 
+    # def dragLeaveEvent(self, event): 
         
-        print(f'Leave: {self.coordinate}')
-        self.parent().parent().recorded_moves.append([self.coordinate])
+    #     print(f'Leave: {self.coordinate} \t{self.parent().parent().recorded_moves}')
+    #     self.parent().parent().recorded_moves.append([self.coordinate])
         
     def dropEvent(self, event):
 
@@ -156,9 +159,11 @@ class Tile(QLabel):
             self.coordinate[0], 
             self.coordinate[1]
             )
-        try:
-            self.parent().parent().recorded_moves[-1].append(self.coordinate)
-        except IndexError: pass
+        # try:
+        #     self.parent().parent().recorded_moves[-1].append(self.coordinate)
+        # except IndexError: pass
+
+        # print(f'Drop: {self.coordinate} \t{self.parent().parent().recorded_moves}')
         self.parent().parent().parent().parent().complete_turn()
 
 # Code for game pieces. Can be white or black based on type_
