@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QGridLayout, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QSizePolicy
+from PyQt5.QtWidgets import QDockWidget, QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtGui import QPixmap, QDrag
-from PyQt5.QtCore import Qt, QMimeData
+from PyQt5.QtCore import Qt, QMimeData, QSize
 
 LEGAL = [
     [0, 0], [0, 3], [0, 6],
@@ -17,7 +17,7 @@ LEGAL = [
 class Board(QWidget):
     'TBA'
 
-    def __init__(self, parent, rings=3):
+    def __init__(self, parent, rings=7):
 
         super(Board, self).__init__(parent)
         self.configure_gui()
@@ -38,6 +38,7 @@ class Board(QWidget):
         self.file = QHBoxLayout(), QHBoxLayout()
         self.rank = QVBoxLayout(), QVBoxLayout()
         self.bank = QVBoxLayout(), QVBoxLayout()
+        # self.bank = Bank(self, 0), Bank(self, 1)
 
         # populate rank and file with appropriate literals
         for i in range(rings):
@@ -102,6 +103,28 @@ class Grid(QWidget):
             for col in range(rings):
                 tile = Tile(self, [row, col])
                 self.layout.addWidget(tile, row, col)
+
+class Bank(QWidget):
+    'TBA'
+
+    def __init__(self, parent, type_):
+
+        super(Bank, self).__init__(parent)
+        self.enabled = type_
+        self.layout = QGridLayout()
+        self.setLayout(self.layout)
+        self.pieces = [
+            Piece(self, type_) for i in range(9)
+            ]
+        for piece in self.pieces: 
+            
+            self.layout.addWidget(piece)
+
+    def toggleEnabled(self):
+
+        for piece in self.pieces:
+
+            piece.draggable = not piece.draggable
 
 # Tile for gameboard. Currently pushbuttons, but would like
 # to make them generic widgets in future
