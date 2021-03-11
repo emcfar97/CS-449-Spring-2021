@@ -1,5 +1,5 @@
 import board, logic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDockWidget, QWidget, QStatusBar, QHBoxLayout
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
@@ -12,7 +12,7 @@ class Game(QMainWindow):
         self.create_widgets()
         self.showMaximized()
 
-    def configure_gui(self):  
+    def configure_gui(self):
         
         self.center = QWidget(self)
         self.layout = QHBoxLayout()
@@ -22,10 +22,28 @@ class Game(QMainWindow):
         
     def create_widgets(self):
 
-        # self.board = board.Board(self)
+        self.placeholder = QWidget(self)
+        self.placeholder.setStyleSheet('color:red')
+        self.board = board.Board(self)
+
+        self.layout.addWidget(self.placeholder, 1)
+        self.layout.addWidget(self.board, 1)
+
         self.statusbar = QStatusBar(self)
-        self.setSatusBar(self.statusbar)
+        self.setStatusBar(self.statusbar)
         self.statusbar.setFixedHeight(25)
+        self.update_status()
+
+    def update_status(self):
+        
+        num = 8
+        self.statusbar.showMessage(
+            f'\tBlack Pieces: {num} \tWhite Pieces: {num}'
+            )
+
+    def complete_turn(self, start, end):
+
+        pass
 
     def keyPressEvent(self, event): 
         
