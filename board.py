@@ -142,6 +142,7 @@ class Tile(QLabel):
         self.coordinate = coordinate
         
         self.setStyleSheet('border: 1px solid black')
+        if coordinate in LEGAL: self.setStyleSheet("background-color:green")
 
     def dragEnterEvent(self, event): 
 
