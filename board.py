@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QDockWidget, QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtGui import QPixmap, QDrag
-from PyQt5.QtCore import Qt, QMimeData, QSize
+from PyQt5.QtCore import Qt, QMimeData
 
 LEGAL = [
     [0, 0], [0, 3], [0, 6],
@@ -100,6 +100,8 @@ class Grid(QWidget):
 
     def create_widgets(self, rings):
 
+        self.tiles = []
+        
         for row in range(rings):
 
             for col in range(rings):
@@ -135,22 +137,28 @@ class Tile(QLabel):
     def __init__(self, parent, coordinate):
 
         super(Tile, self).__init__(parent)
-        self.coordinate = coordinate
+        self.game_manager = self.parent().parent().parent()
         if coordinate in LEGAL: self.setAcceptDrops(True)
+        self.coordinate = coordinate
+        
         self.setStyleSheet('border: 1px solid black')
 
     def dragEnterEvent(self, event): 
-        
-        # print(f'Enter: {self.coordinate} \t{self.parent().parent().recorded_moves}')
-        # try: self.parent().parent().recorded_moves.pop(-1)
-        # except: self.parent().parent().recorded_moves.append([None])
-        
+
         event.accept()
 
-    # def dragLeaveEvent(self, event): 
+    def dragLeaveEvent(self, event): 
         
-    #     print(f'Leave: {self.coordinate} \t{self.parent().parent().recorded_moves}')
-    #     self.parent().parent().recorded_moves.append([self.coordinate])
+        if self.game_manager.stage == 0: pass
+
+        elif self.game_manager.stage == 1: 
+
+            self.game_manager.board.recorded_moves.append(
+                [self.coordinate]
+                )
+
+        elif self.game_manager.stage == 2: pass
+
         
     def dropEvent(self, event):
 
@@ -159,12 +167,13 @@ class Tile(QLabel):
             self.coordinate[0], 
             self.coordinate[1]
             )
-        # try:
-        #     self.parent().parent().recorded_moves[-1].append(self.coordinate)
-        # except IndexError: pass
 
-        # print(f'Drop: {self.coordinate} \t{self.parent().parent().recorded_moves}')
-        self.parent().parent().parent().parent().complete_turn()
+        if self.game_manager.stage == 0: pass
+
+        elif self.game_manager.stage == 1: pass
+
+        elif self.game_manager.stage == 2: pass
+
 
 # Code for game pieces. Can be white or black based on type_
 # variable.

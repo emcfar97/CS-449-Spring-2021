@@ -1,5 +1,5 @@
 import board, logic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDockWidget, QWidget, QStatusBar, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar, QHBoxLayout
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
@@ -8,6 +8,7 @@ class Game(QMainWindow):
         
         super(Game, self).__init__()
         self.setWindowTitle("Nine Men's Morris")
+        self.stage = 0
         self.configure_gui()
         self.create_widgets()
         self.showMaximized()
@@ -30,7 +31,7 @@ class Game(QMainWindow):
 
         self.statusbar = QStatusBar(self)
         self.setStatusBar(self.statusbar)
-        self.statusbar.setFixedHeight(25)
+        self.statusbar.setFixedHeight(30)
         self.update_status()
 
     def update_status(self):
@@ -42,7 +43,8 @@ class Game(QMainWindow):
 
     def complete_turn(self):
 
-        pass
+        moves = self.board.recorded_moves
+        print(moves)
 
     def keyPressEvent(self, event):
         
