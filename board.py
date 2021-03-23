@@ -75,6 +75,22 @@ class Board(QWidget):
         self.layout.addLayout(self.bank[0], 2, 0)
         self.layout.addLayout(self.bank[1], 2, 4)
 
+    def piece_count(self):
+
+        stats = [0, 0]
+
+        for tile in self.grid.tiles:
+
+            child = tile.children()
+            # child_ = tile.childAt()
+            child__ = tile.children()
+
+            # stats[child.type] += 1
+
+        if any(stats): return stats
+
+        return [8, 8]
+
 # Code for grid. Accepts n rows and returns n x n matrix
 # of tiles
 class Grid(QWidget):
@@ -105,8 +121,9 @@ class Grid(QWidget):
         for row in range(rings):
 
             for col in range(rings):
-                tile = Tile(self, [row, col])
-                self.layout.addWidget(tile, row, col)
+
+                self.tiles.append(Tile(self, [row, col]))
+                self.layout.addWidget(self.tiles[-1], row, col)
 
 class Bank(QWidget):
     'TBA'
@@ -142,7 +159,7 @@ class Tile(QLabel):
         self.coordinate = coordinate
         
         self.setStyleSheet('border: 1px solid black')
-        if coordinate in LEGAL: self.setStyleSheet("background-color:green")
+        if coordinate in LEGAL: self.setStyleSheet('background-color: green')
 
     def dragEnterEvent(self, event): 
 
@@ -174,6 +191,8 @@ class Tile(QLabel):
         elif self.game_manager.stage == 1: pass
 
         elif self.game_manager.stage == 2: pass
+
+        self.game_manager.complete_turn()
 
 
 # Code for game pieces. Can be white or black based on type_

@@ -9,6 +9,7 @@ class Game(QMainWindow):
         super(Game, self).__init__()
         self.setWindowTitle("Nine Men's Morris")
         self.stage = 0
+        self.turn = 1
         self.configure_gui()
         self.create_widgets()
         self.showMaximized()
@@ -36,15 +37,24 @@ class Game(QMainWindow):
 
     def update_status(self):
         
-        num = 8
+        black, white = self.board.piece_count()
         self.statusbar.showMessage(
-            f'\tBlack Pieces: {num} \tWhite Pieces: {num}'
+            f'\tBlack Pieces: {black} \tWhite Pieces: {white}'
             )
 
     def complete_turn(self):
+        
+        if self.stage == 0: 
+            
+            if sum(self.board.piece_count()) == 16: pass
+            else: pass
 
-        moves = self.board.recorded_moves
-        print(moves)
+        elif self.stage == 1: pass
+
+        elif self.stage == 2: pass
+
+        self.update_status()
+        self.turn = not self.turn
 
     def keyPressEvent(self, event):
         
