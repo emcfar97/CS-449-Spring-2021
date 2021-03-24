@@ -12,10 +12,11 @@ LEGAL = [
     [6, 0], [6, 3], [6, 6],
     ]
 
-# Code for gameboard. Accepts n rows and returns n x n matrix
-# of tiles with rank and file
 class Board(QWidget):
-    'TBA'
+    """
+    Code for gameboard. Accepts n rows and returns n x n matrix 
+    of tiles with rank and file
+    """
 
     def __init__(self, parent, rings=7):
 
@@ -143,7 +144,6 @@ class Bank(QWidget):
 
             piece.draggable = not piece.draggable
 
-# Tile for gameboard. 
 class Tile(QLabel):
     'Tile for gameboard'
 
@@ -153,7 +153,6 @@ class Tile(QLabel):
         self.game_manager = self.parent().parent().parent()
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
-        self.child = None
         
         self.setStyleSheet('border: 1px solid black')
         if coordinate in LEGAL: self.setStyleSheet('background-color: green')
@@ -190,10 +189,10 @@ class Tile(QLabel):
 
         self.game_manager.complete_turn()
 
-# Code for game pieces. Can be white or black based on type_
-# variable.
 class Piece(QLabel):
-    'TBA'
+    """
+    Code for game pieces. Can be white or black based on type_ variable.
+    """
 
     def __init__(self, parent, type_):
 
