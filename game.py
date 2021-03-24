@@ -3,12 +3,15 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar, QHBo
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
-
+    """
+    TBA. Contains the primary logic for the game
+    """
+    
     def __init__(self):
         
         super(Game, self).__init__()
         self.setWindowTitle("Nine Men's Morris")
-        self.stage = 0
+        self.phase = 0
         self.turn = 1
         self.configure_gui()
         self.create_widgets()
@@ -36,25 +39,49 @@ class Game(QMainWindow):
         self.update_status()
 
     def update_status(self):
+        """
+        TBA
+        """
         
-        black, white = self.board.piece_count()
+        if self.phase == 0: 
+
+            black, white = 9, 9
+
+        elif self.phase == 1: 
+            
+            black, white = self.board.piece_count()
+
+        elif self.phase == 2: 
+            
+            black, white = self.board.piece_count()
+
         self.statusbar.showMessage(
             f'\tBlack Pieces: {black} \tWhite Pieces: {white}'
             )
 
     def complete_turn(self):
-        
-        if self.stage == 0: 
+        """
+        TBA
+        """
+
+        if self.phase == 0: 
             
-            if sum(self.board.piece_count()) == 16: pass
-            else: pass
+            if sum(self.board.piece_count()) == 18: 
+                
+                self.phase = 1
 
-        elif self.stage == 1: pass
+        elif self.phase == 1: 
+            
+            black, white = self.board.piece_count()
 
-        elif self.stage == 2: pass
+            if black == 3 or white == 3:
+
+                self.phase = 2
+
+        elif self.phase == 2: pass
 
         self.update_status()
-        self.turn = not self.turn
+        self.turn += 1
 
     def keyPressEvent(self, event):
         

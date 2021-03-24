@@ -20,8 +20,9 @@ class Board(QWidget):
     def __init__(self, parent, rings=7):
 
         super(Board, self).__init__(parent)
+        self.rings = rings
         self.configure_gui()
-        self.create_widgets(rings)
+        self.create_widgets()
 
     def configure_gui(self):
 
@@ -33,17 +34,17 @@ class Board(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
 
-    def create_widgets(self, rings):
+    def create_widgets(self):
 
         # create main components of board
-        self.grid = Grid(self, rings)
+        self.grid = Grid(self, self.rings)
         self.file = QHBoxLayout(), QHBoxLayout()
         self.rank = QVBoxLayout(), QVBoxLayout()
         self.bank = QVBoxLayout(), QVBoxLayout()
         # self.bank = Bank(self, 0), Bank(self, 1)
 
         # populate rank and file with appropriate literals
-        for i in range(rings):
+        for i in range(self.rings):
 
             rank_1 = QLabel(str(i + 1), self)
             rank_1.setAlignment(Qt.AlignCenter)
@@ -78,21 +79,16 @@ class Board(QWidget):
     def piece_count(self):
 
         stats = [0, 0]
+        children = self.grid.children()
 
-        for tile in self.grid.tiles:
+        for child in children[pow(self.rings, 2) + 1:]:
 
-            child = tile.children()
-            # child_ = tile.childAt()
-            child__ = tile.children()
-
-            # stats[child.type] += 1
+            stats[child.type] += 1
 
         if any(stats): return stats
 
         return [8, 8]
 
-# Code for grid. Accepts n rows and returns n x n matrix
-# of tiles
 class Grid(QWidget):
     'Accepts n rows and returns n x n matrix of tiles'
 
@@ -157,27 +153,27 @@ class Tile(QLabel):
         self.game_manager = self.parent().parent().parent()
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
+        self.child = None
         
         self.setStyleSheet('border: 1px solid black')
         if coordinate in LEGAL: self.setStyleSheet('background-color: green')
 
-    def dragEnterEvent(self, event): 
+    def dragEnterEvent(self, event):
 
         event.accept()
 
-    def dragLeaveEvent(self, event): 
+    def dragLeaveEvent(self, event):
         
-        if self.game_manager.stage == 0: pass
+        if self.game_manager.phase == 0: pass
 
-        elif self.game_manager.stage == 1: 
+        elif self.game_manager.phase == 1: 
 
             self.game_manager.board.recorded_moves.append(
                 [self.coordinate]
                 )
 
-        elif self.game_manager.stage == 2: pass
+        elif self.game_manager.phase == 2: pass
 
-        
     def dropEvent(self, event):
 
         self.parent().layout.addWidget(
@@ -185,15 +181,14 @@ class Tile(QLabel):
             self.coordinate[0], 
             self.coordinate[1]
             )
+        
+        if self.game_manager.phase == 0: pass
 
-        if self.game_manager.stage == 0: pass
+        elif self.game_manager.phase == 1: pass
 
-        elif self.game_manager.stage == 1: pass
-
-        elif self.game_manager.stage == 2: pass
+        elif self.game_manager.phase == 2: pass
 
         self.game_manager.complete_turn()
-
 
 # Code for game pieces. Can be white or black based on type_
 # variable.
@@ -203,6 +198,7 @@ class Piece(QLabel):
     def __init__(self, parent, type_):
 
         super(Piece, self).__init__(parent)
+        self.game_manager = self.parent().parent().parent()
 
         self.type = type_
         if self.type == 0:
@@ -218,11 +214,13 @@ class Piece(QLabel):
 
     def mousePressEvent(self, event):
         
-        drag = QDrag(self)
-        drag.setMimeData(QMimeData())
-        drag.setPixmap(self.pixmap())
-        drag.setHotSpot(event.pos())
-        drag.exec_(Qt.MoveAction)
+        if self.game_manager.turn % 2 == self.type:
+
+            drag = QDrag(self)
+            drag.setMimeData(QMimeData())
+            drag.setPixmap(self.pixmap())
+            drag.setHotSpot(event.pos())
+            drag.exec_(Qt.MoveAction)
 
 # for running as a single file during debugging
 if __name__ == '__main__':
