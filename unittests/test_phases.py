@@ -17,7 +17,10 @@ class Test_Phases(unittest.TestCase):
         """
         
         legal = game.board.LEGAL
-        tiles = random.choices(legal, 18)
+        num = random.randint(14, 18)
+        tiles = random.choices(legal, num)
+        black = random.randint(4, len(tiles) // 2)
+        white = len(tiles) - black
         
         for tile in tiles: pass
 
@@ -27,6 +30,14 @@ class Test_Phases(unittest.TestCase):
         """
         TBA
         """
+        
+        legal = game.board.LEGAL
+        num = random.randint(3, 6)
+        tiles = random.choices(legal, num)
+        black = random.randint(4, len(tiles) // 2)
+        white = len(tiles) - black
+        
+        for tile in tiles: pass
         
         self.assert____()
 
