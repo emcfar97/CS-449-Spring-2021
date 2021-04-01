@@ -1,3 +1,7 @@
+"""
+Code for game's GUI
+"""
+
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtGui import QPixmap, QDrag
 from PyQt5.QtCore import Qt, QMimeData
