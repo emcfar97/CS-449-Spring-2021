@@ -95,7 +95,7 @@ class Board(QWidget):
 
 class Grid(QWidget):
     """
-    Accepts n rows and returns n x n matrix of tiles
+    Code for Grid. Accepts n rows and returns n x n matrix of tiles
     """
 
     def __init__(self, parent, rings=3):
@@ -141,7 +141,7 @@ class Grid(QWidget):
 
 class Tile(QLabel):
     """
-    Tile for gameboard
+    Code for tile. Can be legal or illegal
     """
 
     def __init__(self, parent, coordinate):
