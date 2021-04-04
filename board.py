@@ -194,10 +194,10 @@ class Piece(QLabel):
         self.game_manager = self.parent().parent()
 
         self.type = type_
-        if   self.type == 0: path = r'Resources\black_piece.png'
-        elif self.type == 1: path = r'Resources\white_piece.png'
+        if   self.type == 0: self.path = r'Resources\black_piece.png'
+        elif self.type == 1: self.path = r'Resources\white_piece.png'
         
-        pixmap = QPixmap(path)
+        pixmap = QPixmap(self.path)
         self.setPixmap(pixmap)
         self.setAlignment(Qt.AlignCenter)
 
@@ -210,6 +210,15 @@ class Piece(QLabel):
             drag.setPixmap(self.pixmap())
             drag.setHotSpot(event.pos())
             drag.exec_(Qt.MoveAction)
+
+    def resizeEvent(self, event):
+
+        pixmap = QPixmap(self.path).scaled(
+            event.size(), Qt.KeepAspectRatio, 
+            transformMode=Qt.SmoothTransformation
+            )
+            
+        self.setPixmap(pixmap)
 
 # for running as a single file during debugging
 if __name__ == '__main__':
