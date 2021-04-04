@@ -4,7 +4,8 @@ from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
     """
-    Contains the primary logic for the game
+    Contains the primary logic for the game, primarily
+    based on current phase (of 3) of game
     """
     
     def __init__(self):
