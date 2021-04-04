@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
     """
-    TBA. Contains the primary logic for the game
+    Contains the primary logic for the game
     """
     
     def __init__(self):

@@ -2,8 +2,8 @@
 Code for game's GUI
 """
 
-from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
-from PyQt5.QtGui import QPixmap, QDrag
+from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy, QStyle, QStyleOption
+from PyQt5.QtGui import QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData
 
 LEGAL = [
@@ -46,7 +46,6 @@ class Board(QWidget):
         self.file = QHBoxLayout(), QHBoxLayout()
         self.rank = QVBoxLayout(), QVBoxLayout()
         self.bank = QVBoxLayout(), QVBoxLayout()
-        # self.bank = Bank(self, 0), Bank(self, 1)
 
         # populate rank and file with appropriate literals
         for i in range(self.rings):
@@ -95,7 +94,9 @@ class Board(QWidget):
         return [8, 8]
 
 class Grid(QWidget):
-    'Accepts n rows and returns n x n matrix of tiles'
+    """
+    Accepts n rows and returns n x n matrix of tiles
+    """
 
     def __init__(self, parent, rings=3):
 
@@ -105,9 +106,9 @@ class Grid(QWidget):
 
     def configure_gui(self):
 
-        # self.setStyleSheet(
-        #     'background-image: url(Resources/game_board.png)'
-        #     )
+        self.setStyleSheet(
+            'Grid{border-image: url(Resources/game_board.png)}'
+            )
         self.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
             )
@@ -126,30 +127,22 @@ class Grid(QWidget):
                 self.tiles.append(Tile(self, [row, col]))
                 self.layout.addWidget(self.tiles[-1], row, col)
 
-class Bank(QWidget):
-    'TBA'
+    def paintEvent(self, pen):
+        """
+        Subclassed method. Draws content of stylesheet
+        """
 
-    def __init__(self, parent, type_):
-
-        super(Bank, self).__init__(parent)
-        self.enabled = type_
-        self.layout = QGridLayout()
-        self.setLayout(self.layout)
-        self.pieces = [
-            Piece(self, type_) for i in range(9)
-            ]
-        for piece in self.pieces: 
-            
-            self.layout.addWidget(piece)
-
-    def toggleEnabled(self):
-
-        for piece in self.pieces:
-
-            piece.draggable = not piece.draggable
+        style_option = QStyleOption()
+        style_option.initFrom(self)
+        painter = QPainter(self)
+        self.style().drawPrimitive(
+            QStyle.PE_Widget, style_option, painter, self
+            )
 
 class Tile(QLabel):
-    'Tile for gameboard'
+    """
+    Tile for gameboard
+    """
 
     def __init__(self, parent, coordinate):
 
@@ -158,9 +151,6 @@ class Tile(QLabel):
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
         
-        self.setStyleSheet('border: 1px solid black')
-        if coordinate in LEGAL: self.setStyleSheet('background-color: green')
-
     def dragEnterEvent(self, event):
 
         event.accept()
@@ -201,15 +191,11 @@ class Piece(QLabel):
     def __init__(self, parent, type_):
 
         super(Piece, self).__init__(parent)
-        self.game_manager = self.parent().parent().parent()
+        self.game_manager = self.parent().parent()
 
         self.type = type_
-        if self.type == 0:
-            path = r'Resources\black_piece.png'
-        elif self.type == 1:
-            path = r'Resources\white_piece.png'
-        else:
-            raise ValueError
+        if   self.type == 0: path = r'Resources\black_piece.png'
+        elif self.type == 1: path = r'Resources\white_piece.png'
         
         pixmap = QPixmap(path)
         self.setPixmap(pixmap)
