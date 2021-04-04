@@ -18,8 +18,7 @@ LEGAL = [
 
 class Board(QWidget):
     """
-    Code for gameboard. Accepts n rows and returns n x n matrix 
-    of tiles with rank and file
+    Code for gameboard. Accepts n rows and returns n x n grid with rank and file
     """
 
     def __init__(self, parent, rings=7):
@@ -210,15 +209,6 @@ class Piece(QLabel):
             drag.setPixmap(self.pixmap())
             drag.setHotSpot(event.pos())
             drag.exec_(Qt.MoveAction)
-
-    def resizeEvent(self, event):
-
-        pixmap = QPixmap(self.path).scaled(
-            event.size(), Qt.KeepAspectRatio, 
-            transformMode=Qt.SmoothTransformation
-            )
-            
-        self.setPixmap(pixmap)
 
 # for running as a single file during debugging
 if __name__ == '__main__':
