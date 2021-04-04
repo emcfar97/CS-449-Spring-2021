@@ -40,18 +40,24 @@ class Game(QMainWindow):
 
     def update_status(self):
         """
-        TBA
+        Updates game statusbar for current pieces on 
+        board.
+        ### Assumes certain things, particularly in
+        ### phase 1, that may not be true in all 
+        ### situations
         """
         
-        if self.phase == 0: 
+        if   self.phase == 0:
+            # Currently assumes player taking opponent 
+            # pieces is not a thing.
 
             black, white = 9, 9
 
-        elif self.phase == 1: 
+        elif self.phase == 1:
             
             black, white = self.board.piece_count()
 
-        elif self.phase == 2: 
+        elif self.phase == 2:
             
             black, white = self.board.piece_count()
 
@@ -61,7 +67,11 @@ class Game(QMainWindow):
 
     def complete_turn(self):
         """
-        TBA
+        Runs after player completes turn and determines
+        whether game should progress to next phase
+        ### \# Currently has simple method for determining
+        ### phase progress. Will need to make methods more
+        ### all-inclusive going forward
         """
 
         if self.phase == 0: 
@@ -88,6 +98,18 @@ class Game(QMainWindow):
         key_press = event.key()
         if key_press == Qt.Key_Escape: self.close()
 
+class Controls(QWidget):
+    """
+    Code for the controls of the game
+    ### \# Currently under development
+    """
+    
+    def __init__(self): pass
+
+    def configure_gui(self): pass
+        
+    def create_widgets(self): pass
+        
 Qapp = QApplication([])
 
 app = Game()
