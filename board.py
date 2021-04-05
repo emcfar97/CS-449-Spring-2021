@@ -149,8 +149,15 @@ class Tile(QLabel):
         self.game_manager = self.parent().parent().parent()
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
+        Self.setMinimumSize(32, 32)
         
     def dragEnterEvent(self, event):
+
+        if self.game_manager.phase == 0: pass
+
+        elif self.game_manager.phase == 1: pass
+
+        elif self.game_manager.phase == 2: pass
 
         event.accept()
 
