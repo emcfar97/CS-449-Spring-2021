@@ -28,10 +28,10 @@ class Game(QMainWindow):
         
     def create_widgets(self):
 
-        self.placeholder = QWidget(self)
+        self.controls = Controls(self)
         self.board = board.Board(self)
 
-        self.layout.addWidget(self.placeholder, 1)
+        self.layout.addWidget(self.controls, 1)
         self.layout.addWidget(self.board, 1)
 
         self.statusbar = QStatusBar(self)
@@ -105,7 +105,11 @@ class Controls(QWidget):
     ### \# Currently under development
     """
     
-    def __init__(self): pass
+    def __init__(self):
+        
+        super(Controls, self).__init__()
+        self.configure_gui()
+        self.create_widgets()
 
     def configure_gui(self): pass
         
