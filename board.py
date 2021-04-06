@@ -105,9 +105,6 @@ class Grid(QWidget):
         self.setStyleSheet(
             'Grid{border-image: url(Resources/game_board.png)}'
             )
-        self.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
-            )
         self.layout = QGridLayout()
         self.layout.setSpacing(1)
         self.setLayout(self.layout)

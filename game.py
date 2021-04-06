@@ -1,5 +1,5 @@
 import board, logic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
@@ -30,12 +30,12 @@ class Game(QMainWindow):
         self.controls = Controls(self)
         self.board = board.Board(self)
 
-        self.layout.addWidget(self.controls, 1)
-        self.layout.addWidget(self.board, 1)
+        self.layout.addWidget(self.controls)
+        self.layout.addWidget(self.board)
 
         self.statusbar = QStatusBar(self)
-        self.setStatusBar(self.statusbar)
         self.statusbar.setFixedHeight(30)
+        self.setStatusBar(self.statusbar)
         self.update_status()
 
     def update_status(self):
@@ -107,11 +107,29 @@ class Controls(QWidget):
         
         super(Controls, self).__init__(parent)
         self.configure_gui()
-        self.create_widgets()
+        # self.create_widgets()
 
-    def configure_gui(self): pass
+    def configure_gui(self): 
         
-    def create_widgets(self): pass
+        self.layout = QVBoxLayout()
+        self.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+            )
+        
+    def create_widgets(self): 
+        
+        self.ribbon = QWidget(self)
+        self.stats = QWidget(self)
+        
+        self.ribbon.setStyleSheet(
+            'background: red'
+            )
+        self.stats.setStyleSheet(
+            'background: blue'
+            )
+        
+        self.layout.addWidget(self)
+        self.layout.addWidget(self)
         
 Qapp = QApplication([])
 
