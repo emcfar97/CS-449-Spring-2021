@@ -6,8 +6,7 @@ class Game(QMainWindow):
     """
     Contains the primary logic for the game, primarily
     based on current phase (of 3) of game
-    """
-    
+    """    
     def __init__(self):
         
         super(Game, self).__init__()
@@ -103,11 +102,10 @@ class Controls(QWidget):
     """
     Code for the controls of the game
     ### \# Currently under development
-    """
-    
-    def __init__(self):
+    """    
+    def __init__(self, parent):
         
-        super(Controls, self).__init__()
+        super(Controls, self).__init__(parent)
         self.configure_gui()
         self.create_widgets()
 

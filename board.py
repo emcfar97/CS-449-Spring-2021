@@ -20,7 +20,6 @@ class Board(QWidget):
     """
     Code for gameboard. Accepts n rows and returns n x n grid with rank and file
     """
-
     def __init__(self, parent, rings=7):
 
         super(Board, self).__init__(parent)
@@ -96,7 +95,6 @@ class Grid(QWidget):
     """
     Code for Grid. Accepts n rows and returns n x n matrix of tiles
     """
-
     def __init__(self, parent, rings=3):
 
         super(Grid, self).__init__(parent)
@@ -130,10 +128,10 @@ class Grid(QWidget):
         """
         Subclassed method. Draws content of stylesheet
         """
-
         style_option = QStyleOption()
         style_option.initFrom(self)
         painter = QPainter(self)
+
         self.style().drawPrimitive(
             QStyle.PE_Widget, style_option, painter, self
             )
@@ -142,14 +140,13 @@ class Tile(QLabel):
     """
     Code for tile. Can be legal or illegal
     """
-
     def __init__(self, parent, coordinate):
 
         super(Tile, self).__init__(parent)
         self.game_manager = self.parent().parent().parent()
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
-        Self.setMinimumSize(32, 32)
+        self.setMinimumSize(64, 64)
         
     def dragEnterEvent(self, event):
 
@@ -193,7 +190,6 @@ class Piece(QLabel):
     """
     Code for game pieces. Can be white or black based on type_ variable.
     """
-
     def __init__(self, parent, type_):
 
         super(Piece, self).__init__(parent)
