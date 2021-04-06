@@ -1,7 +1,6 @@
 """
 Code for game's GUI
 """
-
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy, QStyle, QStyleOption
 from PyQt5.QtGui import QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData
@@ -144,6 +143,9 @@ class Tile(QLabel):
 
         super(Tile, self).__init__(parent)
         self.game_manager = self.parent().parent().parent()
+        if __name__ == '__main__':
+            self.game_manager = debug
+
         if coordinate in LEGAL: self.setAcceptDrops(True)
         self.coordinate = coordinate
         self.setMinimumSize(64, 64)
@@ -194,6 +196,9 @@ class Piece(QLabel):
 
         super(Piece, self).__init__(parent)
         self.game_manager = self.parent().parent()
+        if __name__ == '__main__':
+            self.game_manager = debug
+
 
         self.type = type_
         if   self.type == 0: self.path = r'Resources\black_piece.png'
@@ -217,6 +222,16 @@ class Piece(QLabel):
 if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication
 
+    class Debug(object):
+
+        def __init__(self):
+
+            self.turn = 1
+            self.phase = None
+
+        def complete_turn(self): self.turn += 1
+
+    debug = Debug()
     Qapp = QApplication([])
     board = Board(None, 7)
     board.showMaximized()
