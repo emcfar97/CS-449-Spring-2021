@@ -1,5 +1,5 @@
-import board, logic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy
+import random, board, logic
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 
 class Game(QMainWindow):
@@ -11,11 +11,20 @@ class Game(QMainWindow):
         
         super(Game, self).__init__()
         self.setWindowTitle("Nine Men's Morris")
+        self.turn = random.randint(0, 1)
         self.phase = 0
-        self.turn = 1
         self.configure_gui()
         self.create_widgets()
         self.showMaximized()
+        
+        first = {
+            0: 'Black', 1: 'White'
+            }
+        QMessageBox.information(
+            self, '', 
+            f'{first[self.turn]} goes first',
+            QMessageBox.Ok
+            )
 
     def configure_gui(self):
         
