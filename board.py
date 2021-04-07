@@ -201,6 +201,8 @@ class Tile(QLabel):
         elif self.game_manager.phase == 1: pass
 
         elif self.game_manager.phase == 2: pass
+        
+        event.source().index = self.coordinate
 
         self.game_manager.complete_turn()
 
