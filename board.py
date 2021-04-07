@@ -42,7 +42,7 @@ class Board(QWidget):
         self.grid = Grid(self, self.rings)
         self.file = QHBoxLayout(), QHBoxLayout()
         self.rank = QVBoxLayout(), QVBoxLayout()
-        self.bank = QVBoxLayout(), QVBoxLayout()
+        self.bank = Bank(self, 0), Bank(self, 1)
 
         # populate rank and file with appropriate literals
         for i in range(self.rings):
@@ -62,20 +62,14 @@ class Board(QWidget):
             self.file[0].addWidget(file_1)
             self.file[1].addWidget(file_2)
 
-        # populate bank with appropriate pieces
-        for i in range(9):
-
-            self.bank[0].addWidget(Piece(self, 0))
-            self.bank[1].addWidget(Piece(self, 1))
-
         # add grid, rank, file, and banks to board
         self.layout.addWidget(self.grid, 2, 2)
         self.layout.addLayout(self.file[0], 1, 2)
         self.layout.addLayout(self.file[1], 3, 2)
         self.layout.addLayout(self.rank[0], 2, 1)
         self.layout.addLayout(self.rank[1], 2, 3)
-        self.layout.addLayout(self.bank[0], 2, 0)
-        self.layout.addLayout(self.bank[1], 2, 4)
+        self.layout.addWidget(self.bank[0], 2, 0)
+        self.layout.addWidget(self.bank[1], 2, 4)
 
     def piece_count(self):
         """
@@ -140,6 +134,23 @@ class Grid(QWidget):
             QStyle.PE_Widget, style_option, painter, self
             )
 
+class Bank(QWidget):
+    """
+    Code for bank. Keeps track of black or white pieces
+    """
+    def __init__(self, parent, type_):
+
+        super(Bank, self).__init__(parent)
+        self.layout = QVBoxLayout()
+        self.setLayout(self.layout)
+        self.pieces = []
+
+        for _ in range(9): 
+            
+            piece = Piece(self, type_)
+            self.layout.addWidget(piece)
+            self.pieces.append(piece)
+
 class Tile(QLabel):
     """
     Code for tile. Can be legal or illegal
@@ -200,10 +211,8 @@ class Piece(QLabel):
     def __init__(self, parent, type_):
 
         super(Piece, self).__init__(parent)
-        self.game_manager = self.parent().parent()
-        if __name__ == '__main__':
-            self.game_manager = debug
-
+        self.game_manager = self.parent().parent().parent()
+        if __name__ == '__main__': self.game_manager = debug
 
         self.type = type_
         if   self.type == 0: self.path = r'Resources\black_piece.png'
