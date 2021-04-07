@@ -78,7 +78,9 @@ class Board(QWidget):
         self.layout.addLayout(self.bank[1], 2, 4)
 
     def piece_count(self):
-
+        """
+        Returns count for black and white pieces on board
+        """
         stats = [0, 0]
         children = self.grid.children()
 
@@ -89,6 +91,12 @@ class Board(QWidget):
         if any(stats): return stats
 
         return [8, 8]
+
+    def adjacent(self, index):
+        """
+        Returns legal, adjacent indexes for given index
+        """
+        pass
 
 class Grid(QWidget):
     """
