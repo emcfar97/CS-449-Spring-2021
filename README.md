@@ -5,6 +5,6 @@ Project repository for CS Foundations of Software Engineering class of UMKC's Sp
 
 # [Sprint #1](https://docs.google.com/document/d/1XeaHFqGbkpR-zSiLcvlrZjV-mYr2qJn3IuugoVjLgow/view)
 
-# Sprint #2
+# [Sprint #2](https://docs.google.com/document/d/1YwACdCnVzo9R_2M0y3-1Yp9oEj9vu8S-rMyeFAVebk0/view)
 
 # Sprint #3
