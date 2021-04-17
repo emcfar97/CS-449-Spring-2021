@@ -6,13 +6,13 @@ from PyQt5.QtGui import QPixmap, QDrag, QPainter
 from PyQt5.QtCore import Qt, QMimeData
 
 LEGAL = [
-    [0, 0], [0, 3], [0, 6],
-    [1, 1], [1, 3], [1, 5],
-    [2, 2], [2, 3], [2, 4],
-    [3, 0], [3, 1], [3, 2], [3, 4], [3, 5], [3, 6],
-    [4, 2], [4, 3], [4, 4],
-    [5, 1], [5, 3], [5, 5],
-    [6, 0], [6, 3], [6, 6],
+    [1, 0, 0, 1, 0, 0, 1],
+    [0, 1, 0, 1, 0, 1, 0],
+    [0, 0, 1, 1, 1, 0, 0],
+    [1, 1, 1, 0, 1, 1, 1],
+    [0, 0, 1, 1, 1, 0, 0],
+    [0, 1, 0, 1, 0, 1, 0],
+    [1, 0, 0, 1, 0, 0, 1],
     ]
 
 class Board(QWidget):
@@ -86,11 +86,28 @@ class Board(QWidget):
 
         return [8, 8]
 
+    def mill(self, piece):
+
+        # if two oposite directions have piece of same color 
+        if piece.type ==  other.type: pass
+
     def adjacent(self, index):
         """
         Returns legal, adjacent indexes for given index
         """
-        pass
+        
+        # check cardinal directions for piece availability
+        for i in range(4):
+            pass
+        perimeter = [
+            index
+            ]
+
+        for i in perimeter: pass
+
+            # for loop on x and y incrementing to 8 and decrementing to 0 check if in legal stop loop: pass
+                # store
+        return # something
 
 class Grid(QWidget):
     """
@@ -162,7 +179,8 @@ class Tile(QLabel):
         if __name__ == '__main__':
             self.game_manager = debug
 
-        if coordinate in LEGAL: self.setAcceptDrops(True)
+        if LEGAL[coordinate[0]][coordinate[1]]: 
+            self.setAcceptDrops(True)
         self.coordinate = coordinate
         self.setMinimumSize(64, 64)
         
@@ -196,9 +214,14 @@ class Tile(QLabel):
             self.coordinate[1]
             )
         
-        if self.game_manager.phase == 0: pass
+        if self.game_manager.phase == 0: 
+            
+            if event.source().index is not None:
+                adjacent = self.parent().parent().adjacent(event.source())
 
-        elif self.game_manager.phase == 1: pass
+        elif self.game_manager.phase == 1: 
+            
+            adjacent = self.parent().parent().adjacent(event.source())
 
         elif self.game_manager.phase == 2: pass
         
@@ -215,6 +238,7 @@ class Piece(QLabel):
         super(Piece, self).__init__(parent)
         self.game_manager = self.parent().parent().parent()
         if __name__ == '__main__': self.game_manager = debug
+        self.index = None
 
         self.type = type_
         if   self.type == 0: self.path = r'Resources\black_piece.png'
