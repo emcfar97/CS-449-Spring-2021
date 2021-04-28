@@ -76,17 +76,21 @@ class Board(QWidget):
         Returns count for black and white pieces on board
         """
         stats = [0, 0]
-        children = self.grid.children()
 
-        for child in children[pow(self.rings, 2) + 1:]:
-
-            stats[child.type] += 1
+        for i in range(2):
+            stats[i] = sum(
+                piece for piece in self.bank[i] 
+                if piece.index
+                )
 
         if any(stats): return stats
 
         return [8, 8]
 
     def mill(self, piece):
+        """
+        Returns whether a mill has been formed for given piece
+        """
 
         # if two oposite directions have piece of same color 
         if piece.type ==  other.type: pass
