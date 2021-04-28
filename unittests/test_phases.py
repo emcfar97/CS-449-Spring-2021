@@ -2,7 +2,16 @@ import unittest, random
 
 from .. import game
 
-class Test_Phases(unittest.TestCase):
+class TestPhases(unittest.TestCase):
+
+    def setUp(self):
+        
+        Qapp = game.QApplication([])
+
+        self.app = game.Game()
+
+        Qapp.exec_()
+
 
     def test_Phase_1(self):
         """

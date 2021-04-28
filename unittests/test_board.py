@@ -1,8 +1,16 @@
 import unittest
 
-from .. import board
+from .. import game
 
-class Test___(unittest.TestCase):
+class TestBoard(unittest.TestCase):
+
+    def setUp(self):
+        
+        Qapp = game.QApplication([])
+
+        self.app = game.Game()
+
+        Qapp.exec_()
 
     def test_____(self):
         """
