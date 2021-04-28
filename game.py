@@ -121,7 +121,6 @@ small_font = QFont("Times", 15)
 class Controls(QWidget):
     """
     Code for the controls of the game
-    ### \# Currently under development
     """
     def __init__(self, parent):
 
@@ -169,11 +168,6 @@ class Controls(QWidget):
         Rules = QPushButton("Display rules",self)
         Rules.move(700,620)
         Rules.clicked.connect(self.display_rules)
-
-
-
-
-
 
     def begin(self):
         if (self.WPlayerP.isChecked() and self.BPlayerP.isChecked()):
