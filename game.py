@@ -9,8 +9,7 @@ from PyQt5.QtGui import QPixmap
 
 class Game(QMainWindow):
     """
-    Contains the primary logic for the game, primarily
-    based on current phase (of 3) of game
+    Contains the primary logic for the game
     """    
     def __init__(self):
         
@@ -69,7 +68,7 @@ class Game(QMainWindow):
             # Currently assumes player taking opponent 
             # pieces is not a thing.
 
-            black, white = 9, 9
+            black, white = self.board.piece_count()
 
         elif self.phase == 1:
             
