@@ -100,10 +100,12 @@ class Board(QWidget):
         #get a list of adjacent pieces
 
         # if pieces on either side have same color 
-        if piece.type ==  other.type: 
-            #if piece.type == self.type
+        adjacent = self.adjacent(piece.index)
+
+        for adj in adjacent:
+            if piece.type ==  adj.type: 
                 #return True
-            pass
+                pass
         #if other direction other pieces have the same color use logic of above
         #return False
 
