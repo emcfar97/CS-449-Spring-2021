@@ -1,4 +1,4 @@
-import random, board, logic
+import random, board, computer
 from PyQt5.QtWidgets import  QApplication, QMainWindow, QMessageBox, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 import sys
