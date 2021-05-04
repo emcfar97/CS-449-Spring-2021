@@ -76,16 +76,22 @@ class Board(QWidget):
         Returns count for black and white pieces on board
         """
         stats = [0, 0]
+        game_manager = self.parent().parent()
+        
+        if game_manager.phase == 0:
 
-        for i in range(2):
-            stats[i] = sum(
-                piece for piece in self.bank[i] 
-                if piece.index
-                )
+            stats = [len(bank.pieces) for bank in self.bank]
 
-        if any(stats): return stats
+        else:
 
-        return [8, 8]
+            for i in range(2):
+                stats[i] = sum(
+                    piece for piece in 
+                    self.bank[i].pieces
+                    if piece.index
+                    )
+
+        return stats
 
     def mill(self, piece):
         """
