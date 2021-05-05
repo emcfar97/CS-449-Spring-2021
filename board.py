@@ -22,6 +22,7 @@ class Board(QWidget):
     def __init__(self, parent, rings=7):
 
         super(Board, self).__init__(parent)
+        self.game_manager = parent
         self.rings = rings
         self.configure_gui()
         self.create_widgets()
@@ -76,20 +77,19 @@ class Board(QWidget):
         Returns count for black and white pieces on board
         """
         stats = [0, 0]
-        game_manager = self.parent().parent()
-        
-        if game_manager.phase == 0:
+
+        if self.game_manager.phase == 0:
 
             stats = [len(bank.pieces) for bank in self.bank]
 
         else:
 
             for i in range(2):
-                stats[i] = sum(
+                stats[i] = len([
                     piece for piece in 
                     self.bank[i].pieces
                     if piece.index
-                    )
+                    ])
 
         return stats
 
@@ -108,7 +108,6 @@ class Board(QWidget):
                 pass
         #if other direction other pieces have the same color use logic of above
         #return False
-
 
     def adjacent(self, index):
         """
@@ -179,13 +178,23 @@ class Bank(QWidget):
         super(Bank, self).__init__(parent)
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
+        self.game_manager = parent.game_manager
+        self.type = type_
         self.pieces = []
 
-        for _ in range(9): 
+    def start(self):
+
+        for _ in range(9):
             
-            piece = Piece(self, type_)
+            piece = Piece(self, self.type)
             self.layout.addWidget(piece)
             self.pieces.append(piece)
+
+    def clear(self):
+
+        for piece in self.pieces: piece.close()
+
+        self.pieces.clear()
 
 class Tile(QLabel):
     """
@@ -255,7 +264,7 @@ class Piece(QLabel):
     def __init__(self, parent, type_):
 
         super(Piece, self).__init__(parent)
-        self.game_manager = self.parent().parent().parent()
+        self.game_manager = parent.game_manager
         if __name__ == '__main__': self.game_manager = debug
         self.index = None
 

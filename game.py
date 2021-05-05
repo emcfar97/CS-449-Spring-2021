@@ -16,8 +16,6 @@ class Game(QMainWindow):
         self.create_widgets()
         self.showMaximized()
         
-        self.begin()
-
     def configure_gui(self):
         
         self.center = QWidget(self)
@@ -31,7 +29,7 @@ class Game(QMainWindow):
         self.menubar = self.menuBar()
         
         self.menubar.addAction('Controls')
-        self.menubar.addAction('New Game', self.begin)
+        self.menubar.addAction('Start Game', self.start)
         self.menubar.addAction('Quit Game', self.end)
         self.menubar.addAction('Help', self.display_rules)
         
@@ -47,8 +45,10 @@ class Game(QMainWindow):
         self.statusbar.setFixedHeight(30)
         self.setStatusBar(self.statusbar)
         
-    def begin(self):
+    def start(self):
         
+        self.board.bank[0].start()
+        self.board.bank[1].start()
         self.turn = random.randint(0, 1)
         self.phase = 0
 
@@ -83,6 +83,11 @@ class Game(QMainWindow):
 
     def end(self):
 
+        self.board.bank[0].clear()
+        self.board.bank[1].clear()
+        self.update_status()
+
+        return
         mbox = QMessageBox.question(
             self, "Warning!!!", "Are you sure you want to quit?",
             QMessageBox.Yes | QMessageBox.No
@@ -179,6 +184,7 @@ class Controls(QWidget):
 
     def create_widgets(self):
 
+        return
         # self.ribbon = QWidget(self)
         # self.stats = QWidget(self)
 
