@@ -1,5 +1,5 @@
 import random, board, computer
-from PyQt5.QtWidgets import  QApplication, QMainWindow, QMessageBox, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy, QMenuBar, QLabel, QCheckBox, QPushButton
+from PyQt5.QtWidgets import  QApplication, QMainWindow, QMessageBox, QWidget, QStatusBar, QHBoxLayout, QVBoxLayout, QSizePolicy, QLabel, QCheckBox, QPushButton
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import Qt
 
@@ -171,8 +171,6 @@ class Controls(QWidget):
         self.create_widgets()
 
     def configure_gui(self):
-
-        self.menubar = QMenuBar()
 
         self.layout = QVBoxLayout()
         self.setSizePolicy(
