@@ -177,30 +177,30 @@ class Controls(QWidget):
 
     def configure_gui(self):
 
-        self.layout = QVBoxLayout()
+        self.layout = QVBoxLayout(self)
         self.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding
             )
 
     def create_widgets(self):
 
-        return
-        # self.ribbon = QWidget(self)
-        # self.stats = QWidget(self)
+        self.ribbon = QWidget(self)
+        self.stats = QWidget(self)
 
-        # self.ribbon.setSizePolicy(
-        #     QSizePolicy.Expanding, QSizePolicy.Expanding
-        #     )
-        # self.stats.setSizePolicy(
-        #     QSizePolicy.Expanding, QSizePolicy.Expanding
-        #     )
+        self.ribbon.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+            )
+        self.stats.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding
+            )
 
-        # self.ribbon.setStyleSheet('background: red')
-        # self.stats.setStyleSheet('background: green')
-
-        # self.layout.addWidget(self.ribbon)
-        # self.layout.addWidget(self.stats)
+        self.layout.addWidget(self.ribbon)
+        self.layout.addWidget(self.stats)
         
+        __ = QLabel('Under construction', self.ribbon)
+        __.setStyleSheet('font: 25px')
+
+        return
         file = self.menubar.addMenu('File')
 
         return
