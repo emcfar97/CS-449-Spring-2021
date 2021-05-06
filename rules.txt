@@ -1,12 +1,12 @@
-PLACE ALL OF YOUR PEICES ON THE BOARD AND ATTEMPT TO FORM A LINE OF 3
-                        THAT IS A MILL.
+Place all of your pieces on the board and attempt to form a line of 3.
+                        That is a mill.
 
-ONCE A MILL IS FORMED YOU CAN REMOVE ONE OF YOUR OPPONENT'S PIECES.
-
-
-PIECES IN OTHER MILL CANNONT BE REMOVED UNLESS NO OTHER PIECES ARE AVAILABLE
+Once a mill is formed you can remove one of your opponent's pieces.
 
 
-TO WIN YOU MUST LEAVE YOUR OPPONENT WITH NO MOVES OR 2 PIECES
+Pieces in other mill cannot be removed unless no other pieces are available.
 
-                        GOOD LUCK!!!
+
+To win you must leave your opponent with no moves or 2 pieces.
+
+                        Good luck!!!
