@@ -108,6 +108,8 @@ class Game(QMainWindow):
             if not any(self.board.piece_count(1)):
                 
                 self.phase = 1
+            
+            self.board.mill()
 
         elif self.phase == 1: 
             
@@ -117,7 +119,11 @@ class Game(QMainWindow):
 
                 self.phase = 2
 
+            self.board.mill()
+
         elif self.phase == 2: pass
+
+        if self.board.mill(): return
 
         self.update_status()
         self.turn += 1

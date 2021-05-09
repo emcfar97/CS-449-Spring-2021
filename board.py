@@ -87,12 +87,13 @@ class Board(QWidget):
     def piece_count(self, type_=0):
         """
         Returns count for black and white pieces based on type_
-        type_ = 1 will return number of pieces on board
-        type_ = 2 will return number of pieces in play
+        type_ = 1 will return integer of pieces on board
+        type_ = 2 will return integer of pieces in play
+        type_ = 3 will return list of pieces on board
         """
         stats = [0, 0]
 
-        if type_ == 0:
+        if   type_ == 0:
 
             for num, bank in enumerate(self.bank):
 
@@ -110,23 +111,28 @@ class Board(QWidget):
                     if piece.index is None
                     ])
 
+        elif type_ == 2:
+
+            for num, bank in enumerate(self.bank):
+
+                stats = [
+                    piece for piece in bank
+                    if piece.index is not None
+                    and (self.game_manager.turn % 2) == piece.type
+                    ]
+
         return stats
 
-    def mill(self, piece):
+    def mill(self):
         """
         Returns whether a mill has been formed for given piece
         """
-        #get a list of adjacent pieces
+        pieces = self.piece_count(2)
+        if len(pieces) < 3: return
 
-        # if pieces on either side have same color 
-        adjacent = self.adjacent(piece.index)
-
-        for adj in adjacent:
-            if piece.type ==  adj.type: 
-                #return True
-                pass
-        #if other direction other pieces have the same color use logic of above
-        #return False
+        for piece in pieces:
+            
+            return
 
 class Grid(QWidget):
     """
@@ -301,7 +307,7 @@ class Piece(QLabel):
 
     def mousePressEvent(self, event):
         
-        if self.game_manager.turn % 2 == self.type:
+        if (self.game_manager.turn % 2) == self.type:
 
             drag = QDrag(self)
             drag.setMimeData(QMimeData())
