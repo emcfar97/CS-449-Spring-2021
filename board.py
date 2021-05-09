@@ -84,26 +84,30 @@ class Board(QWidget):
         self.layout.addWidget(self.bank[0], 2, 0)
         self.layout.addWidget(self.bank[1], 2, 4)
 
-    def piece_count(self):
+    def piece_count(self, type_=0):
         """
-        Returns count for black and white pieces on board
+        Returns count for black and white pieces based on type_
+        type_ = 1 will return number of pieces on board
+        type_ = 2 will return number of pieces in play
         """
         stats = [0, 0]
 
-        if self.game_manager.phase == 0:
+        if type_ == 0:
 
-            stats = [
-                len([bank.pieces]) 
-                for bank in self.bank
-                ]
+            for num, bank in enumerate(self.bank):
 
-        else:
+                stats[num] = len([
+                    piece for piece in bank
+                    if piece.in_play
+                    ])
 
-            for i in range(2):
-                stats[i] = len([
-                    piece for piece in 
-                    self.bank[i].pieces
-                    if piece.index
+        elif type_ == 1:
+            
+            for num, bank in enumerate(self.bank):
+
+                stats[num] = len([
+                    piece for piece in bank
+                    if piece.index is None
                     ])
 
         return stats
@@ -212,6 +216,8 @@ class Bank(QWidget):
         
         self.type = type_
         self.pieces = []
+    
+    def __iter__(self): return iter(self.pieces)
 
     def start(self):
 
@@ -259,18 +265,6 @@ class Tile(QLabel):
 
         event.accept()
 
-    def dragLeaveEvent(self, event):
-        
-        if self.game_manager.phase == 0: pass
-
-        elif self.game_manager.phase == 1: 
-
-            self.game_manager.board.recorded_moves.append(
-                [self.index]
-                )
-
-        elif self.game_manager.phase == 2: pass
-
     def dropEvent(self, event):
 
         piece = event.source()
@@ -294,6 +288,7 @@ class Piece(QLabel):
         super(Piece, self).__init__(parent)
         self.game_manager = parent.game_manager
         if __name__ == '__main__': self.game_manager = debug
+        self.in_play = True
         self.index = None
 
         self.type = type_

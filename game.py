@@ -101,14 +101,11 @@ class Game(QMainWindow):
         """
         Runs after player completes turn and determines
         whether game should progress to next phase
-        ### \# Currently has simple method for determining
-        ### phase progress. Will need to make methods more
-        ### all-inclusive going forward
         """
 
-        if self.phase == 0: 
+        if self.phase == 0:
             
-            if sum(self.board.piece_count()) == 18: 
+            if not any(self.board.piece_count(1)):
                 
                 self.phase = 1
 
@@ -129,24 +126,9 @@ class Game(QMainWindow):
         """
         Updates game statusbar for current pieces on 
         board.
-        ### Assumes certain things, particularly in
-        ### phase 1, that may not be true in all 
-        ### situations
         """
         
-        if   self.phase == 0:
-            # Currently assumes player taking opponent 
-            # pieces is not a thing.
-
-            black, white = self.board.piece_count()
-
-        elif self.phase == 1:
-            
-            black, white = self.board.piece_count()
-
-        elif self.phase == 2:
-            
-            black, white = self.board.piece_count()
+        black, white = self.board.piece_count()
 
         self.statusbar.showMessage(
             f'\tBlack Pieces: {black} \tWhite Pieces: {white}'
@@ -183,7 +165,7 @@ class Controls(QWidget):
             )
 
         self.setLayout(self.layout)
-        
+
     def create_widgets(self):
 
         self.ribbon = QWidget(self)
