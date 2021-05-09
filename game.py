@@ -182,6 +182,8 @@ class Controls(QWidget):
             QSizePolicy.Expanding, QSizePolicy.Expanding
             )
 
+        self.setLayout(self.layout)
+        
     def create_widgets(self):
 
         self.ribbon = QWidget(self)
