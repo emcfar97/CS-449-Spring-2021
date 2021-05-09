@@ -50,13 +50,25 @@ class Board(QWidget):
 
             rank_1 = QLabel(str(i + 1), self)
             rank_1.setAlignment(Qt.AlignCenter)
+            rank_1.setSizePolicy(
+                QSizePolicy.Minimum, QSizePolicy.Minimum
+                )
             file_1 = QLabel(chr(i + 97), self)
             file_1.setAlignment(Qt.AlignCenter)
+            file_1.setSizePolicy(
+                QSizePolicy.Minimum, QSizePolicy.Minimum
+                )
 
             rank_2 = QLabel(str(i + 1), self)
             rank_2.setAlignment(Qt.AlignCenter)
+            rank_2.setSizePolicy(
+                QSizePolicy.Minimum, QSizePolicy.Minimum
+                )
             file_2 = QLabel(chr(i + 97), self)
             file_2.setAlignment(Qt.AlignCenter)
+            file_2.setSizePolicy(
+                QSizePolicy.Minimum, QSizePolicy.Minimum
+                )
 
             self.rank[0].addWidget(rank_1)
             self.rank[1].addWidget(rank_2)
@@ -80,7 +92,10 @@ class Board(QWidget):
 
         if self.game_manager.phase == 0:
 
-            stats = [len(bank.pieces) for bank in self.bank]
+            stats = [
+                len([bank.pieces]) 
+                for bank in self.bank
+                ]
 
         else:
 
@@ -109,29 +124,11 @@ class Board(QWidget):
         #if other direction other pieces have the same color use logic of above
         #return False
 
-    def adjacent(self, index):
-        """
-        Returns legal, adjacent indexes for given index
-        """
-        
-        # check cardinal directions for piece availability
-        for i in range(4):
-            pass
-        perimeter = [
-            index
-            ]
-
-        for i in perimeter: pass
-
-            # for loop on x and y incrementing to 8 and decrementing to 0 check if in legal stop loop: pass
-                # store
-        return # something
-
 class Grid(QWidget):
     """
     Code for Grid. Accepts n rows and returns n x n matrix of tiles
     """
-    def __init__(self, parent, rings=3):
+    def __init__(self, parent, rings):
 
         super(Grid, self).__init__(parent)
         self.configure_gui()
@@ -142,20 +139,50 @@ class Grid(QWidget):
         self.setStyleSheet(
             'Grid{border-image: url(Resources/game_board.png)}'
             )
-        self.layout = QGridLayout()
-        self.layout.setSpacing(1)
+        self.setAcceptDrops(True)
+        self.setMinimumSize(512, 512)
+
+        self.layout = QGridLayout(self)
         self.setLayout(self.layout)
 
     def create_widgets(self, rings):
 
-        self.tiles = []
-        
         for row in range(rings):
-
+            
             for col in range(rings):
 
-                self.tiles.append(Tile(self, [row, col]))
-                self.layout.addWidget(self.tiles[-1], row, col)
+                tile = Tile(self, [row, col])
+                self.layout.addWidget(tile, row, col)
+
+    def adjacent(self, start, end):
+        """
+        Returns bool for adjacency of given indexes
+        """
+
+        if start is None: return False
+
+        for i in range(2):
+
+            # indexes are on the same line
+            if start[i] == end[i]:
+                
+                indexes = []
+                sorted_indexes = sorted(
+                    (start[not i], end[not i])
+                    )
+                
+                # get list of legal indexes between start and end
+                for j in range(*sorted_indexes):
+
+                    index = [j, start[i]]
+                    if index == [3, 3]: return True
+                    
+                    tile = self.layout.itemAtPosition(*index).widget()
+                    if tile.acceptDrops(): indexes.append(index)
+
+                return len(indexes) > 1
+
+        return True
 
     def paintEvent(self, pen):
         """
@@ -176,9 +203,13 @@ class Bank(QWidget):
     def __init__(self, parent, type_):
 
         super(Bank, self).__init__(parent)
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        
+        self.setMinimumHeight(parent.height())
         self.game_manager = parent.game_manager
+
+        self.layout = QVBoxLayout(self)
+        self.setLayout(self.layout)
+        
         self.type = type_
         self.pieces = []
 
@@ -200,23 +231,29 @@ class Tile(QLabel):
     """
     Code for tile. Can be legal or illegal
     """
-    def __init__(self, parent, coordinate):
+    def __init__(self, parent, index):
 
         super(Tile, self).__init__(parent)
         self.game_manager = self.parent().parent().parent()
-        if __name__ == '__main__':
-            self.game_manager = debug
+        
+        if __name__ == '__main__': self.game_manager = debug
 
-        if LEGAL[coordinate[0]][coordinate[1]]: 
-            self.setAcceptDrops(True)
-        self.coordinate = coordinate
-        self.setMinimumSize(64, 64)
+        if LEGAL[index[0]][index[1]]: self.setAcceptDrops(True)
+        self.index = index
         
     def dragEnterEvent(self, event):
 
-        if self.game_manager.phase == 0: pass
+        if self.game_manager.phase == 0: 
+            
+            if self.parent().adjacent(event.source().index, self.index):
+                
+                return
 
-        elif self.game_manager.phase == 1: pass
+        elif self.game_manager.phase == 1: 
+            
+            if self.parent().adjacent(event.source().index, self.index):
+                
+                return
 
         elif self.game_manager.phase == 2: pass
 
@@ -229,31 +266,22 @@ class Tile(QLabel):
         elif self.game_manager.phase == 1: 
 
             self.game_manager.board.recorded_moves.append(
-                [self.coordinate]
+                [self.index]
                 )
 
         elif self.game_manager.phase == 2: pass
 
     def dropEvent(self, event):
 
-        self.parent().layout.addWidget(
-            event.source(), 
-            self.coordinate[0], 
-            self.coordinate[1]
-            )
+        piece = event.source()
+        piece.index = self.index
+        self.parent().layout.addWidget(piece, *self.index)
         
-        if self.game_manager.phase == 0: 
-            
-            if event.source().index is not None:
-                adjacent = self.parent().parent().adjacent(event.source())
+        if self.game_manager.phase == 0: pass
 
-        elif self.game_manager.phase == 1: 
-            
-            adjacent = self.parent().parent().adjacent(event.source())
+        elif self.game_manager.phase == 1: pass
 
         elif self.game_manager.phase == 2: pass
-        
-        event.source().index = self.coordinate
 
         self.game_manager.complete_turn()
 
